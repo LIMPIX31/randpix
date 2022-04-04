@@ -11,7 +11,7 @@
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "prepare": "yarn build",
-    "version": "git add -A src",
+    "version": "git add",
     "postversion": "git push && git push --tags"
   },
   "exports": {
