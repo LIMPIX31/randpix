@@ -1,6 +1,6 @@
 # Fastest random pixel avatar generator
 
-- **7000 pixel arts per second**
+- **~7000 pixel arts per second**
 - **Many color schemes**
 - **Very simple**
 - **Browser support**
@@ -27,14 +27,14 @@ import { randpix, RandpixColorScheme, Symmetry } from 'randpix'
 
 const generate = randpix({
   colorSet: RandpixColorScheme.DARKULA, // Color theme (default: NEUTRAL)
-  size: 8, // Art size. Recommended 7, 8 (odd/even symmetry) (default: 8)
+  size: 8, // Art size. Recommended 7 or 8 (odd/even symmetry) (default: 8)
   scale: 32, // Pixel scale (default: 1)
   symmetry: Symmetry.VERTICAL, // Symmetry (default: VERTICAL)
-  color: [255, 100, 50], // Color like [R, G, B] for solid art (default: undefined),
+  color: [255, 100, 50], // [R, G, B] like color for solid art (default: undefined),
   seed: 'Some string', // Seed (default: undefined)
 })
 
-const art = generate() // Generating pixel art
+const art = generate() // Generating the pixel art
 
 const pngBuffer = art.toBuffer('image/png')
 const dataURL = art.toDataURL()
@@ -44,7 +44,7 @@ const dataURL = art.toDataURL()
 
 ```ts
 const customColorScheme = [
-  // [R, G, B, C] - C(Often of color, from 0 to 1)
+  // [R, G, B, C], C is the frequency of this color appearing in the pixel art
   [151, 219, 174, 1],
   [195, 229, 174, 0.5],
   [241, 225, 166, 0.5],
