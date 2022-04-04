@@ -10,7 +10,7 @@ import {
 } from './types'
 import seedrandom from 'seedrandom'
 
-export { RandpixColorScheme, Color, ColorScheme }
+export { RandpixColorScheme, Color, ColorScheme, Symmetry }
 
 const randomColor = (set: ColorScheme, seed?: number | string): Color => {
   const randomFunction = seed ? seedrandom(String(seed)) : Math.random
