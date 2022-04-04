@@ -1,6 +1,6 @@
 {
   "name": "randpix",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fastest pixel avatar generator",
   "files": [
     "lib/**/*"
@@ -10,9 +10,8 @@
     "build": "concurrently -n \"CJS,ESM\" -c \"yellow,red\" \"yarn build:cjs\" \"yarn build:esm\"",
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:cjs": "tsc -p tsconfig.cjs.json",
-    "format": "prettier --write \"src/**/*.ts\"",
     "prepare": "yarn build",
-    "version": "yarn format && git add -A src",
+    "version": "git add -A src",
     "postversion": "git push && git push --tags"
   },
   "exports": {
