@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "declaration": true,
+    "moduleResolution": "Node",
+    "declarationDir": "./lib/types",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true
+  },
+  "exclude": [
+    "./lib",
+    "./benchmark.ts"
+  ]
+}

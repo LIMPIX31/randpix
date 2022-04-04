@@ -1,0 +1,41 @@
+{
+  "name": "randpix",
+  "version": "1.0.0",
+  "description": "Fastest pixel avatar generator",
+  "files": [
+    "lib/**/*"
+  ],
+  "types": "./lib/types",
+  "scripts": {
+    "build": "concurrently -n \"CJS,ESM\" -c \"yellow,red\" \"yarn build:cjs\" \"yarn build:esm\"",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "prepare": "yarn build",
+    "version": "yarn format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "exports": {
+    "import": "./lib/esm/index.js",
+    "require": "./lib/cjs/index.js"
+  },
+  "main": "lib/index.js",
+  "module": "lib/esm/index.js",
+  "author": "LIMPIX31",
+  "repository": "https://github.com/LIMPIX31/randpix.git",
+  "bugs": {
+    "url": "https://github.com/LIMPIX31/randpix/issues"
+  },
+  "homepage": "https://github.com/LIMPIX31/randpix#readme",
+  "license": "MIT",
+  "dependencies": {
+    "canvas": "^2.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.23",
+    "concurrently": "^7.1.0",
+    "prettier": "^2.6.2",
+    "typescript": "^4.6.3",
+    "yarn": "^1.22.18"
+  }
+}
