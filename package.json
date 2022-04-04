@@ -1,6 +1,6 @@
 {
   "name": "randpix",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Fastest pixel avatar generator",
   "files": [
     "lib/**/*"
