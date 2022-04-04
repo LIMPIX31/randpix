@@ -1,9 +1,9 @@
 # Fastest random pixel avatar generator
 
-* **7000 pixel arts per second**
-* **Many color schemes**
-* **Very simple**
-* **Browser support**
+- **7000 pixel arts per second**
+- **Many color schemes**
+- **Very simple**
+- **Browser support**
 
 <img alt='preview' width="512" height="512" src="https://i.imgur.com/rN8SQC1.png">
 
@@ -17,7 +17,8 @@ const generate = randpix({
   size: 8, // Art size. Recommended 7, 8 (odd/even symmetry) (default: 8)
   scale: 32, // Pixel scale (default: 1)
   symmetry: Symmetry.VERTICAL, // Symmetry (default: VERTICAL)
-  color: [255, 100, 50], // Color like [R, G, B] for solid art (default: undefined)
+  color: [255, 100, 50], // Color like [R, G, B] for solid art (default: undefined),
+  seed: 'Some string', // Seed (default: undefined)
 })
 
 const art = generate() // Generating pixel art
@@ -30,11 +31,10 @@ const dataURL = art.toDataURL()
 
 ```ts
 const customColorScheme = [
-  // [R, G, B, C] - C(Often of color, from 0 to 1) 
+  // [R, G, B, C] - C(Often of color, from 0 to 1)
   [151, 219, 174, 1],
-  [195, 229, 174, .5],
-  [241, 225, 166, .5],
-  [244, 187, 187, .2]
+  [195, 229, 174, 0.5],
+  [241, 225, 166, 0.5],
+  [244, 187, 187, 0.2],
 ]
-
 ```

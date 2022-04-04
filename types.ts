@@ -17,6 +17,7 @@ export type RandpixOptions = {
   fillFactor?: number
   symmetry?: Symmetry
   color?: Color
+  seed?: string | number
 }
 
 export type RandpixResult = Canvas

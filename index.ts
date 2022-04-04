@@ -1,18 +1,27 @@
 import { createCanvas } from 'canvas'
 import { RandpixColorScheme } from './themes'
-import { Color, ColorScheme, Pattern, RandpixOptions, RandpixResult, Symmetry } from './types'
+import {
+  Color,
+  ColorScheme,
+  Pattern,
+  RandpixOptions,
+  RandpixResult,
+  Symmetry,
+} from './types'
+import seedrandom from 'seedrandom'
 
 export { RandpixColorScheme, Color, ColorScheme }
 
-const randomColor = (set: ColorScheme): Color => {
+const randomColor = (set: ColorScheme, seed?: number | string): Color => {
+  const randomFunction = seed ? seedrandom(String(seed)) : Math.random
   const weights: number[] = set.map(v => v[3] ?? 0)
   for (let i = 0; i < set.length; i++) weights[i] += weights[i - 1] ?? 0
-  const random = Math.random() * weights[weights.length - 1]
+  const random = randomFunction() * weights[weights.length - 1]
   for (let i = 0; i < weights.length; i++)
     if (weights[i] > random) {
       return set[i]
     }
-  return set[(Math.random() * set.length) >> 0]
+  return set[(randomFunction() * set.length) >> 0]
 }
 
 const createPattern = (
@@ -20,13 +29,15 @@ const createPattern = (
   h: number,
   colorScheme: ColorScheme,
   chance: number,
-  color?: Color
+  color?: Color,
+  seed?: string | number
 ): Pattern => {
   const pattern: ColorScheme[] = []
   for (let i = 0; i < h; i++) {
     pattern[i] = []
     for (let j = 0; j < w; j++) {
-      if (Math.random() < chance) pattern[i][j] = color ?? randomColor(colorScheme)
+      if ((seed ? seedrandom(String(seed))() : Math.random()) < chance)
+        pattern[i][j] = color ?? randomColor(colorScheme, seed)
       else pattern[i][j] = [-1, -1, -1]
     }
   }
@@ -59,7 +70,8 @@ const createFinalPattern = (
   symm: Symmetry,
   colorScheme: ColorScheme = RandpixColorScheme.NEUTRAL,
   chance: number = 0.5,
-  color?: Color
+  color?: Color,
+  seed?: string | number
 ): Pattern => {
   let size = [w, h]
   switch (symm) {
@@ -75,7 +87,7 @@ const createFinalPattern = (
   }
   return reflect(
     symm,
-    createPattern(size[0], size[1], colorScheme, chance, color),
+    createPattern(size[0], size[1], colorScheme, chance, color, seed),
     !!size.find(v => !Number.isInteger(v))
   )
 }
@@ -86,7 +98,7 @@ export const randpix = (options?: RandpixOptions) => {
   const scaledsize = size * scale
   const canvas = createCanvas(scaledsize, scaledsize)
   const ctx = canvas.getContext('2d', {
-    alpha: true
+    alpha: true,
   })
   return (): RandpixResult => {
     const pattern = createFinalPattern(
@@ -95,7 +107,8 @@ export const randpix = (options?: RandpixOptions) => {
       options?.symmetry ?? Symmetry.VERTICAL,
       options?.colorScheme ?? RandpixColorScheme.NEUTRAL,
       options?.fillFactor ?? 0.5,
-      options?.color
+      options?.color,
+      options?.seed
     )
     ctx.clearRect(0, 0, scaledsize, scaledsize)
     for (let i = 0; i < size; i++) {
