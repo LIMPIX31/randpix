@@ -26,7 +26,7 @@
 import { randpix, RandpixColorScheme, Symmetry } from 'randpix'
 
 const generate = randpix({
-  colorSet: RandpixColorScheme.DARKULA, // Color theme (default: NEUTRAL)
+  colorScheme: RandpixColorScheme.DARKULA, // Color theme (default: NEUTRAL)
   size: 8, // Art size. Recommended 7 or 8 (odd/even symmetry) (default: 8)
   scale: 32, // Pixel scale (default: 1)
   symmetry: Symmetry.VERTICAL, // Symmetry (default: VERTICAL)
