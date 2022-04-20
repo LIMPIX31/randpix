@@ -12,6 +12,7 @@
   },
   "exclude": [
     "./lib",
-    "./benchmark.ts"
+    "./benchmark.ts",
+    "./example.ts"
   ]
 }
