@@ -2,8 +2,9 @@
   "compilerOptions": {
     "target": "ESNext",
     "declaration": true,
+    "emitDeclarationOnly": true,
     "moduleResolution": "Node",
-    "declarationDir": "./lib/types",
+    "declarationDir": "./lib/typings",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

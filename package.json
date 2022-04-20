@@ -5,21 +5,20 @@
   "files": [
     "lib/**/*"
   ],
-  "types": "./lib/types",
+  "types": "./lib/typings/index.d.ts",
   "scripts": {
-    "build": "concurrently -n \"CJS,ESM\" -c \"yellow,red\" \"yarn build:cjs\" \"yarn build:esm\"",
-    "build:esm": "tsc -p tsconfig.esm.json",
-    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build": "tsc && node build.js",
     "prepare": "yarn build",
     "version": "git add",
     "postversion": "git push && git push --tags"
   },
   "exports": {
-    "import": "./lib/esm/index.js",
-    "require": "./lib/cjs/index.js"
+    "import": "./lib/index.mjs",
+    "require": "./lib/index.cjs",
+    "default": "./lib/index.cjs"
   },
-  "main": "lib/index.js",
-  "module": "lib/esm/index.js",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.mjs",
   "author": "LIMPIX31",
   "repository": "https://github.com/LIMPIX31/randpix.git",
   "bugs": {
@@ -43,9 +42,10 @@
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
-    "@types/seedrandom": "^3.0.2",
     "@types/node": "^17.0.23",
+    "@types/seedrandom": "^3.0.2",
     "concurrently": "^7.1.0",
+    "esbuild": "^0.14.36",
     "prettier": "^2.6.2",
     "typescript": "^4.6.3",
     "yarn": "^1.22.18"
