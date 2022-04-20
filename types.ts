@@ -19,6 +19,7 @@ export type RandpixOptions = {
   color?: Color
   seed?: string | number
   colorBias?: number
+  grayscaleBias?: boolean
 }
 
 export type RandpixResult = Canvas

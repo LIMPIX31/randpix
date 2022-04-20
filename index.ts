@@ -5,6 +5,8 @@ import seedrandom from 'seedrandom'
 
 export { RandpixColorScheme, Color, ColorScheme, Symmetry }
 
+const scaleBias = (bias: number): number => Math.floor((Math.random() * bias) - (bias / 2))
+
 const randomColor = (set: ColorScheme): Color => {
   const weights: number[] = set.map(v => v[3] ?? 0)
   for (let i = 0; i < set.length; i++) weights[i] += weights[i - 1] ?? 0
@@ -22,7 +24,8 @@ const createPattern = (
   colorScheme: ColorScheme,
   chance: number,
   color?: Color,
-  bias: number = 0
+  bias: number = 0,
+  grayscaleBias?: boolean
 ): Pattern => {
   const pattern: ColorScheme[] = []
   for (let i = 0; i < h; i++) {
@@ -30,7 +33,13 @@ const createPattern = (
     for (let j = 0; j < w; j++) {
       if (Math.random() < chance) {
         pattern[i][j] = color ?? randomColor(colorScheme)
-        bias > 0 && (pattern[i][j] = pattern[i][j].map((v, i) => i < 3 ? v as number + Math.floor((Math.random() * bias) - (bias / 2)) : v) as Color)
+        if (bias > 0)
+          if (grayscaleBias) {
+            const scaledBias = scaleBias(bias)
+            pattern[i][j][0] = pattern[i][j][0] + scaledBias
+            pattern[i][j][1] = pattern[i][j][1] + scaledBias
+            pattern[i][j][2] = pattern[i][j][2] + scaledBias
+          } else pattern[i][j] = pattern[i][j].map((v, i) => i < 3 ? v as number + scaleBias(bias) : v) as Color
       } else pattern[i][j] = [-1, -1, -1]
     }
   }
@@ -64,7 +73,8 @@ const createFinalPattern = (
   colorScheme: ColorScheme = RandpixColorScheme.NEUTRAL,
   chance: number = 0.5,
   color?: Color,
-  bias?: number
+  bias?: number,
+  grayscaleBias?: boolean
 ): Pattern => {
   let size = [w, h]
   switch (symm) {
@@ -80,7 +90,7 @@ const createFinalPattern = (
   }
   return reflect(
     symm,
-    createPattern(size[0], size[1], colorScheme, chance, color, bias),
+    createPattern(size[0], size[1], colorScheme, chance, color, bias, grayscaleBias),
     !!size.find(v => !Number.isInteger(v))
   )
 }
@@ -102,7 +112,8 @@ export const randpix = (options?: RandpixOptions) => {
       options?.colorScheme ?? RandpixColorScheme.NEUTRAL,
       options?.fillFactor ?? 0.5,
       options?.color,
-      options?.colorBias
+      options?.colorBias,
+      options?.grayscaleBias
     )
     ctx.clearRect(0, 0, scaledsize, scaledsize)
     for (let i = 0; i < pattern.length; i++) {
