@@ -36,9 +36,7 @@ const createPattern = (
         if (bias > 0)
           if (grayscaleBias) {
             const scaledBias = scaleBias(bias)
-            pattern[i][j][0] = pattern[i][j][0] + scaledBias
-            pattern[i][j][1] = pattern[i][j][1] + scaledBias
-            pattern[i][j][2] = pattern[i][j][2] + scaledBias
+            pattern[i][j] = pattern[i][j].map((v, i) => i < 3 ? v as number + scaledBias : v) as Color
           } else pattern[i][j] = pattern[i][j].map((v, i) => i < 3 ? v as number + scaleBias(bias) : v) as Color
       } else pattern[i][j] = [-1, -1, -1]
     }
