@@ -1,13 +1,6 @@
 import { createCanvas } from 'canvas'
 import { RandpixColorScheme } from './themes'
-import {
-  Color,
-  ColorScheme,
-  Pattern,
-  RandpixOptions,
-  RandpixResult,
-  Symmetry
-} from './types'
+import { Color, ColorScheme, Pattern, RandpixOptions, RandpixResult, Symmetry } from './types'
 import seedrandom from 'seedrandom'
 
 export { RandpixColorScheme, Color, ColorScheme, Symmetry }
@@ -28,15 +21,17 @@ const createPattern = (
   h: number,
   colorScheme: ColorScheme,
   chance: number,
-  color?: Color
+  color?: Color,
+  bias: number = 0
 ): Pattern => {
   const pattern: ColorScheme[] = []
   for (let i = 0; i < h; i++) {
     pattern[i] = []
     for (let j = 0; j < w; j++) {
-      if (Math.random() < chance)
+      if (Math.random() < chance) {
         pattern[i][j] = color ?? randomColor(colorScheme)
-      else pattern[i][j] = [-1, -1, -1]
+        bias > 0 && (pattern[i][j] = pattern[i][j].map((v, i) => i < 3 ? v as number + Math.floor((Math.random() * bias) - (bias / 2)) : v) as Color)
+      } else pattern[i][j] = [-1, -1, -1]
     }
   }
   return pattern
@@ -68,7 +63,8 @@ const createFinalPattern = (
   symm: Symmetry,
   colorScheme: ColorScheme = RandpixColorScheme.NEUTRAL,
   chance: number = 0.5,
-  color?: Color
+  color?: Color,
+  bias?: number
 ): Pattern => {
   let size = [w, h]
   switch (symm) {
@@ -84,7 +80,7 @@ const createFinalPattern = (
   }
   return reflect(
     symm,
-    createPattern(size[0], size[1], colorScheme, chance, color),
+    createPattern(size[0], size[1], colorScheme, chance, color, bias),
     !!size.find(v => !Number.isInteger(v))
   )
 }
@@ -105,11 +101,12 @@ export const randpix = (options?: RandpixOptions) => {
       options?.symmetry ?? Symmetry.VERTICAL,
       options?.colorScheme ?? RandpixColorScheme.NEUTRAL,
       options?.fillFactor ?? 0.5,
-      options?.color
+      options?.color,
+      options?.colorBias
     )
     ctx.clearRect(0, 0, scaledsize, scaledsize)
-    for (let i = 0; i < size; i++) {
-      for (let j = 0; j < size; j++) {
+    for (let i = 0; i < pattern.length; i++) {
+      for (let j = 0; j < pattern[i].length; j++) {
         const color = pattern[i][j]
         if (!color.includes(-1)) {
           ctx.fillStyle = `rgb(${color[0]}, ${color[1]}, ${color[2]})`
