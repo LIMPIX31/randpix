@@ -32,7 +32,8 @@ const generate = randpix({
   symmetry: Symmetry.VERTICAL, // Symmetry (default: VERTICAL)
   color: [255, 100, 50], // [R, G, B] like color for solid art (default: undefined),
   seed: 'Some string', // Seed (default: undefined)
-  colorBias: 15 //
+  colorBias: 15, // Slightly changes the color hue, which adds more color to the image (default: undefined)
+  grayscaleBias: false // Change only the brightness of the color instead of the hue (default: undefined)
 })
 
 const art = generate() // Generating the pixel art
